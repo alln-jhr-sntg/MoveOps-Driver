@@ -29,9 +29,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/spacing_xl"
-        android:text="No notifications yet"
         android:textColor="@color/text_secondary"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notificationsRecyclerView"

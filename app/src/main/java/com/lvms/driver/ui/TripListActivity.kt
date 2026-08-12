@@ -39,6 +39,7 @@ class TripListActivity : BaseNavActivity() {
 
         setupBottomNav(binding.bottomNav.root, R.id.nav_trips)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
+        NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
 
         adapter = TripAdapter { trip ->
             val intent = Intent(this, TripDetailActivity::class.java)
@@ -63,6 +64,7 @@ class TripListActivity : BaseNavActivity() {
         // Covers first launch (fires right after onCreate) and every
         // return to this screen — e.g. back from a trip just started.
         loadTrips()
+        NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
     }
 
     private fun loadTrips() {

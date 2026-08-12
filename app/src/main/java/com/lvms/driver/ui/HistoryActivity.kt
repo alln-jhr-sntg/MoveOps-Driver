@@ -36,6 +36,7 @@ class HistoryActivity : BaseNavActivity() {
 
         setupBottomNav(binding.bottomNav.root, R.id.nav_history)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
+        NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
 
         adapter = TripAdapter { trip ->
             val intent = Intent(this, TripDetailActivity::class.java)
@@ -58,6 +59,7 @@ class HistoryActivity : BaseNavActivity() {
     override fun onResume() {
         super.onResume()
         loadTrips()
+        NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
     }
 
     private fun loadTrips() {

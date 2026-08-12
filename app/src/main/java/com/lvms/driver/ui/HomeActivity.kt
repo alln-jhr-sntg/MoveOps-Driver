@@ -6,9 +6,11 @@ import android.text.format.DateUtils
 import android.view.View
 import com.lvms.driver.R
 import com.lvms.driver.databinding.ActivityHomeBinding
+import com.lvms.driver.model.NotificationListResponse
 import com.lvms.driver.model.TripDto
 import com.lvms.driver.model.TripListResponse
 import com.lvms.driver.network.ApiClient
+import com.lvms.driver.network.NotificationApi
 import com.lvms.driver.network.SessionManager
 import com.lvms.driver.network.TripApi
 import com.lvms.driver.network.parseError
@@ -30,6 +32,7 @@ class HomeActivity : BaseNavActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private val tripApi by lazy { ApiClient.retrofit.create(TripApi::class.java) }
+    private val notificationApi by lazy { ApiClient.retrofit.create(NotificationApi::class.java) }
     private var currentTrip: TripDto? = null
     private var nextTrip: TripDto? = null
 
@@ -42,6 +45,7 @@ class HomeActivity : BaseNavActivity() {
 
         setupBottomNav(binding.bottomNav.root, R.id.nav_home)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
+        NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
 
         bindGreeting()
 
@@ -54,6 +58,26 @@ class HomeActivity : BaseNavActivity() {
         super.onResume()
         loadTrips()
         bindGpsStatus()
+        loadUnreadCount()
+    }
+
+    // Home and Notifications are the only screens that hit the network for
+    // the unread count — the rest of the bottom nav just renders whatever
+    // was last cached in NotificationBadgeState.
+    private fun loadUnreadCount() {
+        notificationApi.getNotifications("notifications").enqueue(object : Callback<NotificationListResponse> {
+            override fun onResponse(call: Call<NotificationListResponse>, response: Response<NotificationListResponse>) {
+                val body = response.body()
+                if (response.isSuccessful && body != null) {
+                    NotificationBadgeState.unreadCount = body.unreadCount
+                    NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
+                }
+            }
+
+            override fun onFailure(call: Call<NotificationListResponse>, t: Throwable) {
+                // Badge just keeps showing its last known value.
+            }
+        })
     }
 
     private fun bindGreeting() {
