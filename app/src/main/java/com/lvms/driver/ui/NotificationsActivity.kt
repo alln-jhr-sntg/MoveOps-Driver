@@ -30,10 +30,12 @@ class NotificationsActivity : BaseNavActivity() {
 
         SessionManager.init(applicationContext)
 
-        setupBottomNav(binding.bottomNav.root, R.id.nav_notifications)
+        setupBottomNav(binding.bottomNav.bottomNavView, R.id.nav_notifications)
         // Already on Notifications — the bell is a no-op here.
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton, onBell = {})
         NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
+        binding.appHeader.root.applyInsetPadding(top = true)
+        binding.bottomNav.root.applyInsetPadding(bottom = true)
 
         adapter = NotificationAdapter { notification -> markRead(notification) }
         binding.notificationsRecyclerView.layoutManager = LinearLayoutManager(this)

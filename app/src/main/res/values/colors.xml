@@ -23,4 +23,7 @@
 
     <!-- Wordmark ("Move" adapts to background; "Ops" is always moveops_primary) -->
     <color name="wordmark_move">#1F2937</color>
+
+    <!-- Bottom nav active-tab indicator pill -->
+    <color name="nav_indicator">#26D83A32</color>
 </resources>

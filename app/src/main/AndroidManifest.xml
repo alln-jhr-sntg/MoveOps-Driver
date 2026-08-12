@@ -20,7 +20,8 @@
         android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".ui.LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -43,7 +44,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.ActiveTripActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <service
             android:name=".service.GpsTrackingService"
             android:foregroundServiceType="location"

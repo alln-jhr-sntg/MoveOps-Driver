@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.lvms.driver.R
 import com.lvms.driver.databinding.ActivityTripDetailBinding
@@ -17,8 +18,10 @@ class TripDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityTripDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applyInsetPadding(top = true, bottom = true)
 
         val trip = getTripExtra()
         if (trip == null) {

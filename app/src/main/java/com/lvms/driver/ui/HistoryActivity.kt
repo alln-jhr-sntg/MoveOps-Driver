@@ -34,9 +34,11 @@ class HistoryActivity : BaseNavActivity() {
 
         SessionManager.init(applicationContext)
 
-        setupBottomNav(binding.bottomNav.root, R.id.nav_history)
+        setupBottomNav(binding.bottomNav.bottomNavView, R.id.nav_history)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
         NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
+        binding.appHeader.root.applyInsetPadding(top = true)
+        binding.bottomNav.root.applyInsetPadding(bottom = true)
 
         adapter = TripAdapter { trip ->
             val intent = Intent(this, TripDetailActivity::class.java)

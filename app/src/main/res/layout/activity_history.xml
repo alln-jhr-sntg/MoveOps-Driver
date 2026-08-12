@@ -35,31 +35,36 @@
             android:text="Cancelled" />
     </com.google.android.material.tabs.TabLayout>
 
-    <ProgressBar
-        android:id="@+id/loadingSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/spacing_xl"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/emptyText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="@dimen/spacing_xl"
-        android:textColor="@color/text_secondary"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/historyRecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="@dimen/screen_padding"
-        android:clipToPadding="false"
-        android:visibility="gone" />
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/loadingSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/emptyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xl"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/historyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/screen_padding"
+            android:clipToPadding="false"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <include
         android:id="@+id/bottomNav"

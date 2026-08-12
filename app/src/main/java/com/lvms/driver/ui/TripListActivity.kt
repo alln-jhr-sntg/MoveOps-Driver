@@ -37,9 +37,11 @@ class TripListActivity : BaseNavActivity() {
 
         SessionManager.init(applicationContext)
 
-        setupBottomNav(binding.bottomNav.root, R.id.nav_trips)
+        setupBottomNav(binding.bottomNav.bottomNavView, R.id.nav_trips)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
         NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
+        binding.appHeader.root.applyInsetPadding(top = true)
+        binding.bottomNav.root.applyInsetPadding(bottom = true)
 
         adapter = TripAdapter { trip ->
             val intent = Intent(this, TripDetailActivity::class.java)

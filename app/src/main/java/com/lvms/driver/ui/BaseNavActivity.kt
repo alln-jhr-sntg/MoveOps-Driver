@@ -1,7 +1,10 @@
 package com.lvms.driver.ui
 
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lvms.driver.R
@@ -14,19 +17,45 @@ import com.lvms.driver.R
  */
 abstract class BaseNavActivity : AppCompatActivity() {
 
+    private var bottomNavView: BottomNavigationView? = null
+    private var navSelectedItemId: Int = 0
+    private var suppressNavCallback = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        syncSelectedTab()
+    }
+
     /**
-     * Wires [bottomNav], marks [selectedItemId] checked, and launches the
-     * matching Activity for any other tap. Uses REORDER_TO_FRONT so the four
+     * Wires [bottomNav], marks [selectedItemId] as selected, and launches the
+     * matching Activity for any other tap. Uses REORDER_TO_FRONT (except for
+     * Home, which always collapses the stack via [goHome]) so the four
      * screens share one task instead of growing an unbounded back stack.
+     *
+     * Also registers a Back handler: from any non-Home tab, Back returns to
+     * Home instead of surfacing whatever tab happens to be stacked beneath.
      */
     protected fun setupBottomNav(bottomNav: BottomNavigationView, selectedItemId: Int) {
-        bottomNav.menu.findItem(selectedItemId)?.isChecked = true
+        bottomNavView = bottomNav
+        navSelectedItemId = selectedItemId
+        bottomNav.selectedItemId = selectedItemId
+
         bottomNav.setOnItemSelectedListener { item ->
-            if (item.itemId == selectedItemId) {
+            if (suppressNavCallback || item.itemId == navSelectedItemId) {
                 return@setOnItemSelectedListener true
             }
+            if (item.itemId == R.id.nav_home) {
+                goHome()
+                // Don't paint this bar's Home item as selected — this screen
+                // is about to be finished (CLEAR_TOP) or left behind.
+                return@setOnItemSelectedListener false
+            }
             val target = when (item.itemId) {
-                R.id.nav_home -> HomeActivity::class.java
                 R.id.nav_trips -> TripListActivity::class.java
                 R.id.nav_history -> HistoryActivity::class.java
                 R.id.nav_notifications -> NotificationsActivity::class.java
@@ -37,8 +66,40 @@ abstract class BaseNavActivity : AppCompatActivity() {
             startActivity(intent)
             @Suppress("DEPRECATION")
             overridePendingTransition(0, 0)
-            true
+            // Returning false leaves this (outgoing) bar showing its own tab
+            // as selected, instead of briefly highlighting the tapped one.
+            false
         }
+
+        if (selectedItemId != R.id.nav_home) {
+            onBackPressedDispatcher.addCallback(this) {
+                goHome()
+            }
+        }
+    }
+
+    /** Re-asserts the correct tab after REORDER_TO_FRONT resumes this screen
+     * without re-running onCreate. */
+    private fun syncSelectedTab() {
+        val bottomNav = bottomNavView ?: return
+        if (bottomNav.selectedItemId == navSelectedItemId) return
+        suppressNavCallback = true
+        bottomNav.selectedItemId = navSelectedItemId
+        suppressNavCallback = false
+    }
+
+    /**
+     * Collapses the task down to a single, resumed Home instance. Used both
+     * for the Home tab tap and for Back from any other tab, so the two paths
+     * leave the stack in the same state: Back from Home then exits the app
+     * instead of revealing a stale tab underneath.
+     */
+    protected fun goHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+        @Suppress("DEPRECATION")
+        overridePendingTransition(0, 0)
     }
 
     /**

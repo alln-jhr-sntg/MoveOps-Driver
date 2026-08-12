@@ -59,7 +59,7 @@
     <style name="Widget.MoveOps.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:minHeight">@dimen/button_min_height</item>
         <item name="android:textAppearance">@style/TextAppearance.MoveOps.Button</item>
-        <item name="android:textColor">@color/moveops_navy</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="strokeColor">@color/moveops_border</item>
         <item name="cornerRadius">@dimen/card_radius</item>
     </style>
@@ -73,6 +73,12 @@
         <item name="cardCornerRadius">@dimen/card_radius</item>
         <item name="cardElevation">0dp</item>
         <item name="contentPadding">@dimen/card_padding</item>
+    </style>
+
+    <!-- Bottom nav -->
+
+    <style name="Widget.MoveOps.BottomNav.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/nav_indicator</item>
     </style>
 
 </resources>

@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="#666666"
+        android:textColor="@color/text_secondary"
         android:layout_marginBottom="32dp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="#666666"
+        android:textColor="@color/text_secondary"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 

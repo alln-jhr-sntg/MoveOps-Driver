@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -43,8 +44,10 @@ class ActiveTripActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityActiveTripBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.root.applyInsetPadding(top = true, bottom = true, includeIme = true)
 
         SessionManager.init(applicationContext)
 
@@ -179,12 +182,13 @@ class ActiveTripActivity : AppCompatActivity() {
 
     // Home is the app's landing screen and refreshes trip + GPS status in
     // onResume, so it's a safe destination regardless of whether this screen
-    // was reached from Home, Trips, or a trip detail. REORDER_TO_FRONT
-    // matches the bottom nav's own navigation pattern — it brings an
-    // existing Home instance forward instead of stacking a duplicate.
+    // was reached from Home, Trips, or a trip detail. CLEAR_TOP + SINGLE_TOP
+    // matches BaseNavActivity.goHome() — it collapses everything stacked
+    // above the existing Home instance instead of leaving Trips/History
+    // buried underneath it.
     private fun returnHome() {
         val intent = Intent(this@ActiveTripActivity, HomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         startActivity(intent)
         finish()
     }

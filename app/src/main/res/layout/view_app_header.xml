@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_bell"
             android:contentDescription="Notifications"
-            app:tint="@color/moveops_navy" />
+            app:tint="@color/text_primary" />
 
         <TextView
             android:id="@+id/unreadBadgeText"
@@ -85,7 +85,7 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_logout"
             android:contentDescription="Log out"
-            app:tint="@color/moveops_navy" />
+            app:tint="@color/text_primary" />
     </FrameLayout>
 
 </LinearLayout>

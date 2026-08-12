@@ -43,9 +43,11 @@ class HomeActivity : BaseNavActivity() {
 
         SessionManager.init(applicationContext)
 
-        setupBottomNav(binding.bottomNav.root, R.id.nav_home)
+        setupBottomNav(binding.bottomNav.bottomNavView, R.id.nav_home)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
         NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
+        binding.appHeader.root.applyInsetPadding(top = true)
+        binding.bottomNav.root.applyInsetPadding(bottom = true)
 
         bindGreeting()
 
