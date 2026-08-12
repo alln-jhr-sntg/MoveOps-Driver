@@ -22,7 +22,13 @@ data class TripDto(
     @SerializedName("odometer_end_km") val odometerEndKm: Double? = null,
     @SerializedName("actual_departure") val actualDeparture: String? = null,
     @SerializedName("actual_return") val actualReturn: String? = null,
-    @SerializedName("cancellation_reason") val cancellationReason: String? = null
+    @SerializedName("cancellation_reason") val cancellationReason: String? = null,
+    // Gate pass — every trip implies an approved gatepass (trips are only
+    // created at gatepass approval), but these are rendered null-safe anyway.
+    @SerializedName("gatepass_code") val gatepassCode: String? = null,
+    @SerializedName("gatepass_status") val gatepassStatus: String? = null,
+    @SerializedName("gatepass_approver") val gatepassApprover: String? = null,
+    @SerializedName("gatepass_approved_at") val gatepassApprovedAt: String? = null
 ) : Serializable
 
 data class TripListResponse(
