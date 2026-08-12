@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/moveops_bg">
+
+    <include
+        android:id="@+id/appHeader"
+        layout="@layout/view_app_header" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/moveops_border" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
+
+            <TextView
+                android:id="@+id/greetingText"
+                style="@style/TextAppearance.MoveOps.Greeting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Good morning, Juan" />
+
+            <TextView
+                android:id="@+id/dateText"
+                style="@style/TextAppearance.MoveOps.InfoLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:textSize="12sp"
+                tools:text="Wednesday, August 12" />
+
+            <ProgressBar
+                android:id="@+id/loadingSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/emptyStateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:gravity="center"
+                android:padding="@dimen/spacing_xl"
+                android:text="No trips assigned right now"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone" />
+
+            <!-- CURRENT TRIP -->
+            <LinearLayout
+                android:id="@+id/currentTripSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.MoveOps.SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:text="Current Trip" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MoveOps.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/currentReservationCodeText"
+                                style="@style/TextAppearance.MoveOps.CardCode"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                tools:text="RES-2026-0142" />
+
+                            <TextView
+                                android:id="@+id/currentStatusBadge"
+                                style="@style/TextAppearance.MoveOps.Badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_success"
+                                android:paddingHorizontal="@dimen/spacing_sm"
+                                android:paddingVertical="2dp"
+                                android:textColor="@color/status_success"
+                                tools:text="IN PROGRESS" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/currentDestinationText"
+                            style="@style/TextAppearance.MoveOps.InfoValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_md"
+                            tools:text="Batangas Port" />
+
+                        <TextView
+                            android:id="@+id/currentVehicleText"
+                            style="@style/TextAppearance.MoveOps.InfoLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs"
+                            tools:text="Toyota HiAce — ABC 1234" />
+
+                        <TextView
+                            android:id="@+id/currentDepartureText"
+                            style="@style/TextAppearance.MoveOps.InfoLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs"
+                            tools:text="Departure: Aug 12, 2026 — 8:00 AM" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/spacing_lg">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/viewDetailsButton"
+                                style="@style/Widget.MoveOps.Button.Secondary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="@dimen/spacing_sm"
+                                android:text="View details" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/markCompletedButton"
+                                style="@style/Widget.MoveOps.Button.Primary"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Mark completed" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- GPS STATUS -->
+            <LinearLayout
+                android:id="@+id/gpsStatusSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.MoveOps.SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:text="GPS Status" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MoveOps.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <View
+                            android:id="@+id/gpsDot"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/dot_gps_active" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/spacing_sm"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/gpsStatusText"
+                                style="@style/TextAppearance.MoveOps.InfoValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="GPS active" />
+
+                            <TextView
+                                android:id="@+id/gpsLastUpdateText"
+                                style="@style/TextAppearance.MoveOps.InfoLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                tools:text="Last update: just now" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- NEXT TRIP -->
+            <LinearLayout
+                android:id="@+id/nextTripSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TextAppearance.MoveOps.SectionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_sm"
+                    android:text="Next Trip" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.MoveOps.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/nextReservationCodeText"
+                                style="@style/TextAppearance.MoveOps.CardCode"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                tools:text="RES-2026-0143" />
+
+                            <TextView
+                                android:id="@+id/nextStatusBadge"
+                                style="@style/TextAppearance.MoveOps.Badge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/bg_badge_warning"
+                                android:paddingHorizontal="@dimen/spacing_sm"
+                                android:paddingVertical="2dp"
+                                android:textColor="@color/status_warning"
+                                tools:text="PENDING START" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/nextDestinationText"
+                            style="@style/TextAppearance.MoveOps.InfoValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_md"
+                            tools:text="Tagaytay City" />
+
+                        <TextView
+                            android:id="@+id/nextDepartureText"
+                            style="@style/TextAppearance.MoveOps.InfoLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs"
+                            tools:text="Departure: Aug 13, 2026 — 7:00 AM" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/nextViewDetailsButton"
+                            style="@style/Widget.MoveOps.Button.Secondary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_lg"
+                            android:text="View details" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/view_bottom_nav" />
+
+</LinearLayout>

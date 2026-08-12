@@ -17,8 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication"
-        android:usesCleartextTraffic="true">
+        android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".ui.LoginActivity"
             android:exported="true">
@@ -28,7 +27,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.HomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.TripListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.HistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.NotificationsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.TripDetailActivity"

@@ -12,8 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
-    // Update this to match your computer's current IPv4 address (ipconfig).
-    private const val BASE_URL = "http://10.234.55.170/lvms/api/"
+    private const val BASE_URL = "https://darkgoldenrod-chough-131870.hostingersite.com/api/"
 
     private val authInterceptor = Interceptor { chain ->
         val token = SessionManager.getToken()

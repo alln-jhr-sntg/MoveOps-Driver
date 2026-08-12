@@ -6,7 +6,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayout
 import com.lvms.driver.R
-import com.lvms.driver.databinding.ActivityTripListBinding
+import com.lvms.driver.databinding.ActivityHistoryBinding
 import com.lvms.driver.model.TripDto
 import com.lvms.driver.model.TripListResponse
 import com.lvms.driver.network.ApiClient
@@ -17,27 +17,24 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TripListActivity : BaseNavActivity() {
+class HistoryActivity : BaseNavActivity() {
 
-    private lateinit var binding: ActivityTripListBinding
+    private lateinit var binding: ActivityHistoryBinding
     private val tripApi by lazy { ApiClient.retrofit.create(TripApi::class.java) }
     private lateinit var adapter: TripAdapter
     private var allTrips: List<TripDto> = emptyList()
 
-    // Tab 0 = Upcoming (pending_start), tab 1 = Ongoing (in_progress).
-    // The API now returns every status (History needs completed/cancelled
-    // too), so this screen must filter explicitly rather than assume
-    // "anything not completed belongs here".
+    // Tab 0 = Completed, tab 1 = Cancelled.
     private var selectedTabPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTripListBinding.inflate(layoutInflater)
+        binding = ActivityHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         SessionManager.init(applicationContext)
 
-        setupBottomNav(binding.bottomNav.root, R.id.nav_trips)
+        setupBottomNav(binding.bottomNav.root, R.id.nav_history)
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
 
         adapter = TripAdapter { trip ->
@@ -45,10 +42,10 @@ class TripListActivity : BaseNavActivity() {
             intent.putExtra("trip", trip)
             startActivity(intent)
         }
-        binding.tripRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.tripRecyclerView.adapter = adapter
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.historyRecyclerView.adapter = adapter
 
-        binding.tripsTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.historyTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 selectedTabPosition = tab.position
                 renderSelectedTab()
@@ -60,8 +57,6 @@ class TripListActivity : BaseNavActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Covers first launch (fires right after onCreate) and every
-        // return to this screen — e.g. back from a trip just started.
         loadTrips()
     }
 
@@ -74,7 +69,7 @@ class TripListActivity : BaseNavActivity() {
 
                 if (response.code() == 401) {
                     SessionManager.clear()
-                    startActivity(Intent(this@TripListActivity, LoginActivity::class.java))
+                    startActivity(Intent(this@HistoryActivity, LoginActivity::class.java))
                     finish()
                     return
                 }
@@ -98,23 +93,23 @@ class TripListActivity : BaseNavActivity() {
     }
 
     private fun renderSelectedTab() {
-        val status = if (selectedTabPosition == 0) "pending_start" else "in_progress"
+        val status = if (selectedTabPosition == 0) "completed" else "cancelled"
         val trips = allTrips.filter { it.tripStatus == status }
         showTrips(trips, status)
     }
 
     private fun showTrips(trips: List<TripDto>, status: String) {
         if (trips.isEmpty()) {
-            binding.emptyText.text = if (status == "pending_start") {
-                "No upcoming trips"
+            binding.emptyText.text = if (status == "completed") {
+                "No completed trips yet"
             } else {
-                "No ongoing trips"
+                "No cancelled trips"
             }
             binding.emptyText.visibility = View.VISIBLE
-            binding.tripRecyclerView.visibility = View.GONE
+            binding.historyRecyclerView.visibility = View.GONE
         } else {
             binding.emptyText.visibility = View.GONE
-            binding.tripRecyclerView.visibility = View.VISIBLE
+            binding.historyRecyclerView.visibility = View.VISIBLE
             adapter.submitList(trips)
         }
     }
@@ -123,7 +118,7 @@ class TripListActivity : BaseNavActivity() {
         binding.loadingSpinner.visibility = if (isLoading) View.VISIBLE else View.GONE
         if (isLoading) {
             binding.emptyText.visibility = View.GONE
-            binding.tripRecyclerView.visibility = View.GONE
+            binding.historyRecyclerView.visibility = View.GONE
         }
     }
 }

@@ -2,4 +2,25 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Brand -->
+    <color name="moveops_primary">#D83A32</color>
+    <color name="moveops_navy">#1F2937</color>
+    <color name="moveops_bg">#F6F6F5</color>
+    <color name="moveops_surface">#FFFFFF</color>
+    <color name="moveops_border">#E5E7EB</color>
+
+    <!-- Status -->
+    <color name="status_success">#16A34A</color>
+    <color name="status_warning">#EAB308</color>
+    <color name="status_danger">#DC2626</color>
+    <color name="status_info">#2563EB</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1F2937</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_muted">#9CA3AF</color>
+
+    <!-- Wordmark ("Move" adapts to background; "Ops" is always moveops_primary) -->
+    <color name="wordmark_move">#1F2937</color>
 </resources>

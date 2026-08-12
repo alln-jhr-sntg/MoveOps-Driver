@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
 
         SessionManager.init(applicationContext)
         if (SessionManager.isLoggedIn()) {
-            startActivity(Intent(this, TripListActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
             finish()
             return
         }
@@ -60,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
                             firstName = body.firstName,
                             lastName = body.lastName
                         )
-                        startActivity(Intent(this@LoginActivity, TripListActivity::class.java))
+                        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
                         finish()
                     } else {
                         binding.statusText.text = response.parseError()

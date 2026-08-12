@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@color/moveops_surface"
+    android:paddingHorizontal="@dimen/screen_padding"
+    android:paddingVertical="@dimen/spacing_md">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/wordmarkMoveText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Move"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/wordmark_move" />
+
+        <TextView
+            android:id="@+id/wordmarkOpsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ops"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/moveops_primary" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/bellButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_bell"
+            android:contentDescription="Notifications"
+            app:tint="@color/moveops_navy" />
+
+        <TextView
+            android:id="@+id/unreadBadgeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="2dp"
+            android:minWidth="16dp"
+            android:minHeight="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="3dp"
+            android:background="@drawable/bg_badge_count"
+            android:textColor="@color/white"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif-medium"
+            android:visibility="gone"
+            tools:text="3"
+            tools:visibility="visible" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/logoutButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_logout"
+            android:contentDescription="Log out"
+            app:tint="@color/moveops_navy" />
+    </FrameLayout>
+
+</LinearLayout>

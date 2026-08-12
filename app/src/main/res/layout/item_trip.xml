@@ -1,67 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MoveOps.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?attr/selectableItemBackground"
+    android:layout_marginBottom="@dimen/spacing_md"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/reservationCodeText"
+                style="@style/TextAppearance.MoveOps.CardCode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="RES-2026-0142" />
+
+            <TextView
+                android:id="@+id/statusBadge"
+                style="@style/TextAppearance.MoveOps.Badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge_warning"
+                android:paddingHorizontal="@dimen/spacing_sm"
+                android:paddingVertical="2dp"
+                android:textColor="@color/status_warning"
+                tools:text="PENDING START" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/reservationCodeText"
-            android:layout_width="0dp"
+            android:id="@+id/destinationText"
+            style="@style/TextAppearance.MoveOps.InfoValue"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/spacing_md"
+            tools:text="Batangas Port" />
 
         <TextView
-            android:id="@+id/statusBadge"
-            android:layout_width="wrap_content"
+            android:id="@+id/vehicleText"
+            style="@style/TextAppearance.MoveOps.InfoLabel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="@dimen/spacing_xs"
+            tools:text="Toyota HiAce — ABC 1234" />
+
+        <TextView
+            android:id="@+id/purposeText"
+            style="@style/TextAppearance.MoveOps.InfoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Cargo delivery" />
+
+        <TextView
+            android:id="@+id/departureText"
+            style="@style/TextAppearance.MoveOps.InfoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            tools:text="Departs: Aug 12, 8:00 AM" />
+
+        <TextView
+            android:id="@+id/historyDetailText"
+            style="@style/TextAppearance.MoveOps.InfoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:visibility="gone"
+            tools:text="Distance: 42 km"
+            tools:visibility="visible" />
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/destinationText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:layout_marginTop="4dp" />
-
-    <TextView
-        android:id="@+id/vehicleText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="#666666"
-        android:layout_marginTop="4dp" />
-
-    <TextView
-        android:id="@+id/purposeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="#666666" />
-
-    <TextView
-        android:id="@+id/departureText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:textColor="#666666"
-        android:layout_marginTop="4dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#E0E0E0"
-        android:layout_marginTop="12dp" />
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Typography -->
+
+    <style name="TextAppearance.MoveOps.Greeting" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">@dimen/text_greeting</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.CardCode" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/text_card_code</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.InfoValue" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textSize">@dimen/text_info_value</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.InfoLabel" parent="TextAppearance.Material3.BodySmall">
+        <item name="android:textSize">@dimen/text_info_label</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_muted</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.SectionHeader" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">@dimen/text_section_header</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.05</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.Badge" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:textSize">@dimen/text_badge</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="TextAppearance.MoveOps.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:textSize">@dimen/text_button</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Buttons -->
+
+    <style name="Widget.MoveOps.Button.Primary" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textAppearance">@style/TextAppearance.MoveOps.Button</item>
+        <item name="backgroundTint">@color/moveops_primary</item>
+        <item name="cornerRadius">@dimen/card_radius</item>
+    </style>
+
+    <style name="Widget.MoveOps.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="android:textAppearance">@style/TextAppearance.MoveOps.Button</item>
+        <item name="android:textColor">@color/moveops_navy</item>
+        <item name="strokeColor">@color/moveops_border</item>
+        <item name="cornerRadius">@dimen/card_radius</item>
+    </style>
+
+    <!-- Cards -->
+
+    <style name="Widget.MoveOps.Card" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">@color/moveops_surface</item>
+        <item name="strokeColor">@color/moveops_border</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">@dimen/card_padding</item>
+    </style>
+
+</resources>

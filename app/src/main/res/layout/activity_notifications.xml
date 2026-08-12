@@ -15,26 +15,6 @@
         android:layout_height="1dp"
         android:background="@color/moveops_border" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tripsTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/moveops_surface"
-        app:tabIndicatorColor="@color/moveops_primary"
-        app:tabSelectedTextColor="@color/moveops_primary"
-        app:tabTextColor="@color/text_secondary">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upcoming" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ongoing" />
-    </com.google.android.material.tabs.TabLayout>
-
     <ProgressBar
         android:id="@+id/loadingSpinner"
         android:layout_width="wrap_content"
@@ -49,11 +29,12 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="@dimen/spacing_xl"
+        android:text="No notifications yet"
         android:textColor="@color/text_secondary"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tripRecyclerView"
+        android:id="@+id/notificationsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

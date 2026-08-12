@@ -143,7 +143,7 @@ class ActiveTripActivity : AppCompatActivity() {
                         val serviceIntent = Intent(this@ActiveTripActivity, GpsTrackingService::class.java)
                         serviceIntent.putExtra("trip_id", trip.tripId)
                         ContextCompat.startForegroundService(this@ActiveTripActivity, serviceIntent)
-                        returnToTripList()
+                        returnHome()
                     } else {
                         binding.statusText.text = response.parseError()
                     }
@@ -164,7 +164,7 @@ class ActiveTripActivity : AppCompatActivity() {
                     setLoading(false)
                     if (response.isSuccessful) {
                         stopService(Intent(this@ActiveTripActivity, GpsTrackingService::class.java))
-                        returnToTripList()
+                        returnHome()
                     } else {
                         binding.statusText.text = response.parseError()
                     }
@@ -177,9 +177,14 @@ class ActiveTripActivity : AppCompatActivity() {
             })
     }
 
-    private fun returnToTripList() {
-        val intent = Intent(this@ActiveTripActivity, TripListActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+    // Home is the app's landing screen and refreshes trip + GPS status in
+    // onResume, so it's a safe destination regardless of whether this screen
+    // was reached from Home, Trips, or a trip detail. REORDER_TO_FRONT
+    // matches the bottom nav's own navigation pattern — it brings an
+    // existing Home instance forward instead of stacking a duplicate.
+    private fun returnHome() {
+        val intent = Intent(this@ActiveTripActivity, HomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         startActivity(intent)
         finish()
     }

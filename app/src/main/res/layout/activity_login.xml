@@ -4,15 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@color/moveops_bg"
     android:padding="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="MoveOps"
+        android:textColor="@color/moveops_primary"
+        android:textSize="28sp" />
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LVMS Driver Login"
-        android:textSize="24sp"
-        android:layout_marginBottom="32dp" />
+        android:layout_marginBottom="32dp"
+        android:text="Driver Login"
+        android:textColor="@color/text_secondary"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/emailInput"
@@ -30,8 +41,9 @@
         android:inputType="textPassword"
         android:layout_marginBottom="16dp" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
+        style="@style/Widget.MoveOps.Button.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In" />

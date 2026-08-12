@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand hues stay identical in dark mode -->
+    <color name="moveops_primary">#D83A32</color>
+    <color name="moveops_navy">#1F2937</color>
+    <color name="status_success">#16A34A</color>
+    <color name="status_warning">#EAB308</color>
+    <color name="status_danger">#DC2626</color>
+    <color name="status_info">#2563EB</color>
+
+    <!-- Neutrals flip -->
+    <color name="moveops_bg">#121417</color>
+    <color name="moveops_surface">#1E2126</color>
+    <color name="moveops_border">#33373E</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F3F4F6</color>
+    <color name="text_secondary">#9CA3AF</color>
+    <color name="text_muted">#6B7280</color>
+
+    <!-- Wordmark: "Move" is white on a dark background -->
+    <color name="wordmark_move">#FFFFFF</color>
+</resources>

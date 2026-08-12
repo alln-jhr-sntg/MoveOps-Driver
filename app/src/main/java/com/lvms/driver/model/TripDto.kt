@@ -17,7 +17,12 @@ data class TripDto(
     @SerializedName("odometer_start_km") val odometerStartKm: Double? = null,
     @SerializedName("passenger_count") val passengerCount: Int,
     @SerializedName("cargo_weight_kg") val cargoWeightKg: Double,
-    @SerializedName("purpose_name") val purposeName: String
+    @SerializedName("purpose_name") val purposeName: String,
+    // History fields — only present for completed/cancelled trips.
+    @SerializedName("odometer_end_km") val odometerEndKm: Double? = null,
+    @SerializedName("actual_departure") val actualDeparture: String? = null,
+    @SerializedName("actual_return") val actualReturn: String? = null,
+    @SerializedName("cancellation_reason") val cancellationReason: String? = null
 ) : Serializable
 
 data class TripListResponse(

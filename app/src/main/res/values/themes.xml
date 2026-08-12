@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/moveops_primary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/moveops_navy</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/moveops_surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOutline">@color/moveops_border</item>
+        <item name="android:colorBackground">@color/moveops_bg</item>
+        <item name="android:statusBarColor">@color/moveops_surface</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/moveops_surface</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.MoveOps.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MoveOps.Medium</item>
+        <item name="materialButtonStyle">@style/Widget.MoveOps.Button.Primary</item>
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+
+    <style name="ShapeAppearance.MoveOps.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.MoveOps.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>
