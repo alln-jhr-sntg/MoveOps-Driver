@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Release signing — never commit the keystore or its passwords.
+# Back these up somewhere safe outside this repo: losing them means no
+# future release build can ever be signed to match this app's identity,
+# and every device that installed a build signed with this key would be
+# unable to receive an in-place update.
+keystore.properties
+/keystore/
