@@ -1,6 +1,7 @@
 package com.lvms.driver.ui
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.View
@@ -9,10 +10,12 @@ import com.lvms.driver.databinding.ActivityHomeBinding
 import com.lvms.driver.model.NotificationListResponse
 import com.lvms.driver.model.TripDto
 import com.lvms.driver.model.TripListResponse
+import com.lvms.driver.model.VersionInfo
 import com.lvms.driver.network.ApiClient
 import com.lvms.driver.network.NotificationApi
 import com.lvms.driver.network.SessionManager
 import com.lvms.driver.network.TripApi
+import com.lvms.driver.network.VersionApi
 import com.lvms.driver.network.parseError
 import com.lvms.driver.service.GpsTrackingService
 import retrofit2.Call
@@ -33,8 +36,15 @@ class HomeActivity : BaseNavActivity() {
     private lateinit var binding: ActivityHomeBinding
     private val tripApi by lazy { ApiClient.retrofit.create(TripApi::class.java) }
     private val notificationApi by lazy { ApiClient.retrofit.create(NotificationApi::class.java) }
+    private val versionApi by lazy { ApiClient.retrofit.create(VersionApi::class.java) }
     private var currentTrip: TripDto? = null
     private var nextTrip: TripDto? = null
+
+    companion object {
+        // Static asset, not an /api/ route — same host as ApiClient.BASE_URL.
+        private const val VERSION_CHECK_URL =
+            "https://darkgoldenrod-chough-131870.hostingersite.com/public/downloads/version.json"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +71,39 @@ class HomeActivity : BaseNavActivity() {
         loadTrips()
         bindGpsStatus()
         loadUnreadCount()
+        checkForUpdate()
+    }
+
+    // Best-effort — a failed check just leaves the banner hidden. Never
+    // blocks or interrupts the driver's actual work.
+    private fun checkForUpdate() {
+        versionApi.getLatestVersion(VERSION_CHECK_URL).enqueue(object : Callback<VersionInfo> {
+            override fun onResponse(call: Call<VersionInfo>, response: Response<VersionInfo>) {
+                val info = response.body() ?: return
+                if (!response.isSuccessful || info.versionCode <= installedVersionCode()) {
+                    return
+                }
+                binding.updateVersionText.text = "Version ${info.versionName} is ready to install"
+                binding.updateBanner.visibility = View.VISIBLE
+                binding.updateNowButton.setOnClickListener {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(info.apkUrl)))
+                }
+            }
+
+            override fun onFailure(call: Call<VersionInfo>, t: Throwable) {
+                // Silent — no network is not worth bothering the driver about.
+            }
+        })
+    }
+
+    private fun installedVersionCode(): Int {
+        val packageInfo = packageManager.getPackageInfo(packageName, 0)
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode.toInt()
+        } else {
+            @Suppress("DEPRECATION")
+            packageInfo.versionCode
+        }
     }
 
     // Home and Notifications are the only screens that hit the network for
