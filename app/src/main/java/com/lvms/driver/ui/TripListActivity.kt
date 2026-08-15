@@ -41,7 +41,10 @@ class TripListActivity : BaseNavActivity() {
         setupHeader(binding.appHeader.bellButton, binding.appHeader.logoutButton)
         NotificationBadgeState.render(binding.appHeader.unreadBadgeText)
         binding.appHeader.root.applyInsetPadding(top = true)
-        binding.bottomNav.root.applyInsetPadding(bottom = true)
+        // No applyInsetPadding(bottom = true) here: BottomNavigationView pads
+        // itself for the nav bar inset unconditionally, so padding this
+        // container too double-counts it and leaves a dead gap above the
+        // system nav bar.
 
         adapter = TripAdapter { trip ->
             val intent = Intent(this, TripDetailActivity::class.java)
