@@ -1,10 +1,16 @@
 package com.lvms.driver.ui
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.text.format.DateUtils
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.lvms.driver.R
 import com.lvms.driver.databinding.ActivityHomeBinding
 import com.lvms.driver.model.NotificationListResponse
@@ -39,11 +45,40 @@ class HomeActivity : BaseNavActivity() {
     private val versionApi by lazy { ApiClient.retrofit.create(VersionApi::class.java) }
     private var currentTrip: TripDto? = null
     private var nextTrip: TripDto? = null
+    private var pendingGpsRefreshTripId: Int? = null
+
+    // Requests location (+ notifications on Tiramisu+) before letting a
+    // Refresh tap reach GpsTrackingService — a trip started administratively
+    // (not through this device's ActiveTripActivity "Confirm Start", which
+    // already gates on these same permissions) can have tracking still
+    // completely ungranted the first time the driver opens the app.
+    private val gpsPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { results ->
+        val tripId = pendingGpsRefreshTripId
+        pendingGpsRefreshTripId = null
+        if (tripId != null && results[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+            GpsTrackingService.refresh(this, tripId)
+        }
+        bindGpsStatus()
+    }
+
+    // Ticks bindGpsStatus() once a second while the screen is visible, so
+    // "Last update: X ago" and the Live/Delayed/Stale tier actually advance
+    // instead of freezing at whatever they were when onResume last ran.
+    private val gpsTickHandler = Handler(Looper.getMainLooper())
+    private val gpsTickRunnable = object : Runnable {
+        override fun run() {
+            bindGpsStatus()
+            gpsTickHandler.postDelayed(this, GPS_TICK_INTERVAL_MS)
+        }
+    }
 
     companion object {
         // Static asset, not an /api/ route — same host as ApiClient.BASE_URL.
         private const val VERSION_CHECK_URL =
             "https://darkgoldenrod-chough-131870.hostingersite.com/public/downloads/version.json"
+        private const val GPS_TICK_INTERVAL_MS = 1_000L
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +102,7 @@ class HomeActivity : BaseNavActivity() {
         binding.viewDetailsButton.setOnClickListener { openDetail(currentTrip) }
         binding.markCompletedButton.setOnClickListener { openActiveTrip(currentTrip) }
         binding.nextViewDetailsButton.setOnClickListener { openDetail(nextTrip) }
+        binding.gpsRefreshButton.setOnClickListener { onRefreshGpsClicked() }
     }
 
     override fun onResume() {
@@ -75,6 +111,49 @@ class HomeActivity : BaseNavActivity() {
         bindGpsStatus()
         loadUnreadCount()
         checkForUpdate()
+        gpsTickHandler.postDelayed(gpsTickRunnable, GPS_TICK_INTERVAL_MS)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        gpsTickHandler.removeCallbacks(gpsTickRunnable)
+    }
+
+    private fun onRefreshGpsClicked() {
+        val trip = currentTrip ?: return
+        if (hasRequiredLocationPermissions()) {
+            GpsTrackingService.refresh(this, trip.tripId)
+        } else {
+            pendingGpsRefreshTripId = trip.tripId
+            gpsPermissionLauncher.launch(requiredLocationPermissions())
+        }
+        bindGpsStatus() // reflect refreshInFlight immediately, don't wait for the next tick
+    }
+
+    // Same permission set and SDK gating as ActiveTripActivity's
+    // hasRequiredPermissions()/requiredPermissions() — kept as a separate
+    // copy here since the two screens have no shared base to hang a
+    // utility off, matching this app's existing "no Utils file" convention.
+    private fun hasRequiredLocationPermissions(): Boolean {
+        val locationGranted = ContextCompat.checkSelfPermission(
+            this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val notificationsGranted = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else true
+
+        return locationGranted && notificationsGranted
+    }
+
+    private fun requiredLocationPermissions(): Array<String> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
     }
 
     // Best-effort — a failed check just leaves the banner hidden. Never
@@ -209,20 +288,22 @@ class HomeActivity : BaseNavActivity() {
             return
         }
         binding.gpsStatusSection.visibility = View.VISIBLE
-        if (GpsTrackingService.isTracking) {
-            binding.gpsDot.setBackgroundResource(R.drawable.dot_gps_active)
-            binding.gpsStatusText.text = "GPS active"
-            val lastPing = GpsTrackingService.lastPingAtMillis
-            binding.gpsLastUpdateText.text = if (lastPing > 0) {
-                "Last update: ${DateUtils.getRelativeTimeSpanString(lastPing, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)}"
-            } else {
-                "Waiting for first update…"
-            }
-        } else {
-            binding.gpsDot.setBackgroundResource(R.drawable.dot_gps_inactive)
-            binding.gpsStatusText.text = "GPS inactive"
-            binding.gpsLastUpdateText.text = "Tracking is not currently running"
+
+        val isTracking = GpsTrackingService.isTracking
+        val lastPing = GpsTrackingService.lastPingAtMillis
+        val classification = GpsStatus.classify(isTracking, lastPing)
+
+        binding.gpsDot.setBackgroundResource(classification.dotRes)
+        binding.gpsStatusText.text = classification.label
+        binding.gpsLastUpdateText.text = when {
+            !isTracking -> "Tracking is not currently running"
+            lastPing <= 0L -> "Waiting for first update…"
+            else -> "Last update: ${GpsStatus.formatAge(System.currentTimeMillis() - lastPing)}"
         }
+
+        val refreshing = GpsTrackingService.refreshInFlight
+        binding.gpsRefreshSpinner.visibility = if (refreshing) View.VISIBLE else View.GONE
+        binding.gpsRefreshButton.isEnabled = !refreshing
     }
 
     private fun bindNextTrip(trip: TripDto?) {

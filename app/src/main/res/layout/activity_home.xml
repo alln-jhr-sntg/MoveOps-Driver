@@ -267,6 +267,21 @@
                                 android:layout_marginTop="2dp"
                                 tools:text="Last update: just now" />
                         </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/gpsRefreshSpinner"
+                            style="?android:attr/progressBarStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_sm"
+                            android:visibility="gone" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/gpsRefreshButton"
+                            style="@style/Widget.MoveOps.Button.Secondary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Refresh" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
