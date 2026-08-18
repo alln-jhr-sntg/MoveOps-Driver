@@ -12,10 +12,9 @@ object SessionManager {
 
     private lateinit var prefs: SharedPreferences
 
-    // Must be called before any other method here — LoginActivity does
-    // this in onCreate() since it's currently always the entry point.
-    // If a non-login screen ever becomes reachable first, this moves to
-    // a custom Application class instead.
+    // Must be called before any other method here. Every Activity calls
+    // this defensively in its own onCreate() (not just LoginActivity),
+    // so there's no dependency on which screen happens to launch first.
     fun init(context: Context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
